@@ -1,13 +1,16 @@
-import type { PixelArt } from "./types.js";
+import { parseBitmap } from "./parse-bitmap.js";
 import { validatePixelArt } from "./validate-pixel-art.js";
+import type { PixelArt, PixelArtInput } from "./types.js";
 
-/**
- * Creates an immutable PixelArt object.
- *
- * Every asset in Pixel Keep should be created through this function.
- */
-export function createPixelArt<const T extends PixelArt>(art: T): Readonly<T> {
-  validatePixelArt(art);
+export function createPixelArt<const T extends PixelArtInput>(
+  art: T,
+): Readonly<PixelArt> {
+  const pixelArt: PixelArt = {
+    ...art,
+    pixels: parseBitmap(art.bitmap, art.width, art.height, art.palette.length),
+  };
 
-  return Object.freeze(art);
+  validatePixelArt(pixelArt);
+
+  return Object.freeze(pixelArt);
 }

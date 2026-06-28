@@ -9,6 +9,8 @@ export const Flower = createPixelArt({
   width: 2,
   height: 2,
   palette,
-  pixels: [0, 1, 2, -1],
+  bitmap: `01
+   2.
+  `,
   tags: ["cute", "plant", "flower"],
 });

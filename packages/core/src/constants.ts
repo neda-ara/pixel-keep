@@ -1,4 +1,1 @@
-/**
- * Palette index representing transparency.
- */
-export const TRANSPARENT = -1;
+export const TRANSPARENT = -1; // Palette index representing transparency.

@@ -1,11 +1,9 @@
 import { TRANSPARENT } from "./constants.js";
 import type { PixelArt } from "./types.js";
 
-/**
- * Validates a PixelArt object.
- *
- * Throws an Error if the data is invalid.
- */
+// Validates a PixelArt object.
+// Throws an Error if the data is invalid.
+
 export function validatePixelArt(art: PixelArt): void {
   if (art.width <= 0) {
     throw new Error("Width must be greater than 0.");
