@@ -1,0 +1,11 @@
+.pixel-art {
+  display: grid;
+  grid-template-columns: repeat(var(--pixel-width), var(--pixel-size));
+  grid-template-rows: repeat(var(--pixel-height), var(--pixel-size));
+  image-rendering: pixelated;
+}
+
+.pixel-art__pixel {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+}
