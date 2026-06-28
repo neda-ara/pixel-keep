@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "generate": "node scripts/generate-asset.mjs"
+    "generate": "node scripts/create-asset-base.mjs"
   },
   "dependencies": {
     "@pixel-keep/core": "workspace:*"
