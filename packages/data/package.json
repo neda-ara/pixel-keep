@@ -16,9 +16,14 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate": "node scripts/generate-asset.mjs"
   },
   "dependencies": {
     "@pixel-keep/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "tsx": "^4.19.0"
   }
 }

@@ -1,1 +1,1 @@
-export * from "./flowers/flower.js";
+export * from "./generated/index.js";
