@@ -1,15 +1,12 @@
 import { BITMAP_SYMBOLS } from "./bitmap-symbols.js";
 
 export function parseBitmap(
-  bitmap: string,
+  bitmap: readonly string[],
   width: number,
   height: number,
   paletteSize: number,
 ): readonly number[] {
-  const rows = bitmap
-    .trim()
-    .split("\n")
-    .map((row) => row.trim());
+  const rows = bitmap;
 
   if (rows.length !== height) {
     throw new Error(`Bitmap has ${rows.length} row(s), expected ${height}.`);

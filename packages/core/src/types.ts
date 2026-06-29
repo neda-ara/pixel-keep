@@ -14,13 +14,13 @@ export interface PixelArtInput {
   width: number;
   height: number;
   palette: Palette;
-  bitmap: string; // Human-readable bitmap.
+  bitmap: readonly string[]; // Human-readable bitmap.
   category: string;
   tags?: readonly string[]; // search keywords
 }
 
 // Parsed pixel art used by the renderer.
 export interface PixelArt extends Omit<PixelArtInput, "bitmap"> {
-  bitmap: string; // Original bitmap.
+  bitmap: readonly string[]; // Original bitmap.
   pixels: readonly PixelIndex[]; // Parsed pixel indices.
 }
