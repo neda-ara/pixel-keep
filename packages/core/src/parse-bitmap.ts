@@ -6,22 +6,20 @@ export function parseBitmap(
   height: number,
   paletteSize: number,
 ): readonly number[] {
-  const rows = bitmap;
-
-  if (rows.length !== height) {
-    throw new Error(`Bitmap has ${rows.length} row(s), expected ${height}.`);
+  if (bitmap.length !== height) {
+    throw new Error(`Bitmap has ${bitmap.length} row(s). Expected ${height}.`);
   }
 
   const pixels: number[] = [];
 
-  for (const row of rows) {
+  for (const [rowIndex, row] of bitmap.entries()) {
     if (row.length !== width) {
       throw new Error(
-        `Bitmap row "${row}" has length ${row.length}, expected ${width}.`,
+        `Row ${rowIndex + 1} has ${row.length} pixel(s). Expected ${width}.\n\n${row}`,
       );
     }
 
-    for (const symbol of row) {
+    for (const [columnIndex, symbol] of [...row].entries()) {
       if (symbol === ".") {
         pixels.push(-1);
         continue;
@@ -30,12 +28,14 @@ export function parseBitmap(
       const index = BITMAP_SYMBOLS.indexOf(symbol);
 
       if (index === -1) {
-        throw new Error(`Unknown bitmap symbol "${symbol}".`);
+        throw new Error(
+          `Unknown bitmap symbol "${symbol}" at row ${rowIndex + 1}, column ${columnIndex + 1}.`,
+        );
       }
 
       if (index >= paletteSize) {
         throw new Error(
-          `Bitmap uses palette index ${index}, but palette only has ${paletteSize} color(s).`,
+          `Palette index "${symbol}" at row ${rowIndex + 1}, column ${columnIndex + 1} exceeds the palette size (${paletteSize}).`,
         );
       }
 

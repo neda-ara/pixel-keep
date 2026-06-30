@@ -1,12 +1,14 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const [, , category, name] = process.argv;
+const [, , category, name, sizeArg] = process.argv;
 
 if (!category || !name) {
-  console.error("Usage: pnpm generate <category> <name>");
+  console.error("Usage: pnpm generate <category> <name> [size | widthxheight]");
   process.exit(1);
 }
+
+const { width, height } = parseSize(sizeArg);
 
 const SRC_DIR = path.resolve("src");
 const GENERATED_DIR = path.join(SRC_DIR, "generated");
@@ -24,20 +26,31 @@ if (await exists(filePath)) {
 
 const componentName = toPascalCase(name);
 
+const bitmap = Array.from(
+  { length: height },
+  () => `    "${".".repeat(width)}",`,
+).join("\n");
+
 await fs.writeFile(
   filePath,
   `import { createPixelArt } from "@pixel-keep/core";
+
+const palette = [] as const;
 
 export const ${componentName} = createPixelArt({
   id: "${toKebabCase(name)}",
   name: "${componentName}",
   category: "${category}",
-  width: 1,
-  height: 1,
-  palette: [],
-  pixels: [],
+  width: ${width},
+  height: ${height},
+  palette,
+  bitmap: [
+  ${bitmap}
+  ],
+  tags: [],
 });
 `,
+  "utf8",
 );
 
 await regenerateExports();
@@ -58,12 +71,15 @@ async function regenerateExports() {
     if (entry.name === "generated") continue;
 
     const categoryPath = path.join(SRC_DIR, entry.name);
-
     const files = await fs.readdir(categoryPath);
 
     for (const file of files) {
-      if (!file.endsWith(".ts")) continue;
-      if (file === "index.ts") continue;
+      if (!file.endsWith(".ts")) {
+        continue;
+      }
+      if (file === "index.ts") {
+        continue;
+      }
 
       const base = file.slice(0, -3);
 
@@ -89,6 +105,36 @@ async function exists(file) {
   } catch {
     return false;
   }
+}
+
+function parseSize(size) {
+  if (!size) {
+    return {
+      width: 16,
+      height: 16,
+    };
+  }
+
+  if (/^\d+$/.test(size)) {
+    const value = Number(size);
+
+    return {
+      width: value,
+      height: value,
+    };
+  }
+
+  const match = /^(\d+)x(\d+)$/i.exec(size);
+
+  if (!match) {
+    console.error('Invalid size. Use "32" or "16x24".');
+    process.exit(1);
+  }
+
+  return {
+    width: Number(match[1]),
+    height: Number(match[2]),
+  };
 }
 
 function toPascalCase(value) {
