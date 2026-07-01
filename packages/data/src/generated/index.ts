@@ -1,1 +1,1 @@
-export { Flower } from "../flowers/flower.js";
+export { PinkLily } from "../nature/pink-lily.js";
