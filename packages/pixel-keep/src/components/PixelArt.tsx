@@ -4,7 +4,7 @@ import type { PixelArt as PixelArtData } from "@pixel-keep/core";
 interface PixelArtProps {
   art: PixelArtData;
   pixelSize?: number;
-  fit?: number | string;
+  fit?: number;
   className?: string;
 }
 
@@ -17,16 +17,13 @@ export function PixelArt({
   const width = art.width * pixelSize;
   const height = art.height * pixelSize;
 
-  const fitSize = typeof fit === "number" ? `${fit}px` : fit;
-
-  const scale =
-    typeof fit === "number" ? Math.min(fit / width, fit / height) : 1;
+  const scale = fit === undefined ? 1 : Math.min(fit / width, fit / height);
 
   return (
     <div
       style={{
-        width: fitSize ?? `${width}px`,
-        height: fitSize ?? `${height}px`,
+        width: fit ?? width,
+        height: fit ?? height,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
