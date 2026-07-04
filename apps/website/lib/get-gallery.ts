@@ -1,7 +1,9 @@
 import * as Assets from "@pixel-keep/data";
+import type { GalleryGroup } from "./gallery-types";
+import type { PixelArtData } from "pixel-keep";
 
-export function getGallery() {
-  const groups = new Map<string, (typeof Assets)[keyof typeof Assets][]>();
+export function getGallery(): readonly GalleryGroup[] {
+  const groups = new Map<string, PixelArtData[]>();
 
   for (const asset of Object.values(Assets)) {
     const assets = groups.get(asset.category);
